@@ -43,6 +43,7 @@ export class MetapathComponent implements OnInit {
 
   pathString = '';
 
+  currentNodeIndex = 5;
 
   public config: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -110,10 +111,6 @@ export class MetapathComponent implements OnInit {
     }, 100);
   }
 
-  public nodeClick(idx) {
-    console.log('nodeClick' + idx);
-  }
-
   public onIndexChange(index: number): void {
   }
 
@@ -137,7 +134,7 @@ export class MetapathComponent implements OnInit {
       maxY = Math.max(minY, dy);
     }
     // set new half offset for centering different curves
-    this.halfYOffset = this.minHeight / 2 - Math.abs( maxY - minY) / 2 + 60;
+    this.halfYOffset = this.minHeight / 2 - Math.abs(maxY - minY) / 2 + 60;
 
     // adjust size of svg
     this.cWidth = this.pathStartOffset + this.pathEndOffset + ((this.points.length - 1) * this.pathPointsSpace);
@@ -180,4 +177,31 @@ export class MetapathComponent implements OnInit {
     const y = -1 * (Math.cos(x) * this.amplitudeY) + this.halfYOffset;
     return y;
   }
+
+  getNodeClass(idx) {
+    if (idx < this.currentNodeIndex) {
+      return 'node-done';
+    }
+
+    if (idx === this.currentNodeIndex) {
+      return 'node-current';
+    }
+
+    return 'node-next';
+  }
+
+  goToPoint(dir) {
+    const newIndex = this.currentNodeIndex + dir;
+    if (newIndex >= 0 && newIndex < this.points.length) {
+      this.currentNodeIndex = newIndex;
+    }
+  }
+
+  public nodeClick(idx) {
+    if (idx === this.currentNodeIndex) {
+      this.goToPoint(+1);
+    }
+    console.log('nodeClick' + idx);
+  }
+
 }

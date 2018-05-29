@@ -57,6 +57,53 @@
 
 .swiper-slide-active {}
 
-.node {
+.node-next {
   cursor: pointer;
 }
+.node-current {
+  cursor: pointer;
+  fill: red;
+  stroke: white;
+}
+.node-done {
+  pointer-events: none;
+  fill: green;
+  stroke: white;
+}
+.node-next {
+  pointer-events: none;
+  fill: orange;
+  stroke: white;
+}
+
+.button {
+  z-index: 1000;
+  position: absolute;
+  font-size: 20px;
+  font-family: Arial;
+  color: yellow;
+  background-color: green;
+  border-radius: 10px;
+  padding: 20px 40px ;
+  border: 3px solid yellow;
+}
+
+.button-next {
+  bottom: 10px;
+  right: 10px;
+}
+
+.button-prev {
+  bottom: 10px;
+  left: 10px;
+}
+
+.button-help {
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  width: 120px;
+  margin: auto;
+}
+
+
