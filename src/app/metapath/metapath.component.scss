@@ -1,0 +1,71 @@
+.meta-path {
+  border: 1px solid black;
+  background-image: url("/assets/bg-dzungle.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  display: flex;
+  justify-content: center;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+.meta-path-container {
+  border: 1px solid greenyellow;
+}
+
+.meta-path {
+
+  .swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  // deep overrides for swiper
+
+
+  /deep/ {
+    .swiper-wrapper {
+      background-image: url("/assets/krivka.png");
+      background-repeat: repeat-x;
+      background-position: left center;
+    }
+
+    .swiper-slide {
+      width: auto !important;
+      height: 75vw;
+      max-width: none !important;
+    }
+  }
+}
+
+.content {
+  width: 1400px;
+}
+
+.swiper-slide {
+  height: auto;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    height: 100%;
+    width: auto;
+    margin: 0 auto
+  }
+}
+
+.swiper-slide-active {
+  background-color: yellow;
+}
+
+.node {
+  cursor: pointer;
+}

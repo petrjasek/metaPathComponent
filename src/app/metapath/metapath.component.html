@@ -1,0 +1,45 @@
+<div class="meta-path">
+  <div #container class="meta-path-container"
+    [style.width.px]="containerWidth"
+    [style.height.px]="containerHeight">
+    <swiper #swiperWrapper class="swiper-container" [config]="config" (indexChange)="onIndexChange($event)">
+      <div class="swiper-slide">
+        <div [style.height.px]="containerHeight">
+          <svg [attr.viewBox]="'0 0 '+ cWidth +' 768'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <svg:g id="theme" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+
+              <style type="text/css">
+                .node {
+                  fill: url(#MyGradient)
+                }
+
+                .node:hover {
+                  fill: url(#MyGradientHover)
+                }
+              </style>
+              <defs>
+                <radialGradient id="MyGradient">
+                  <stop offset="58%" stop-color="green" />
+                  <stop offset="60%" stop-color="white" />
+                </radialGradient>
+                <radialGradient id="MyGradientHover">
+                  <stop offset="58%" stop-color="green" />
+                  <stop offset="60%" stop-color="yellow" />
+                </radialGradient>
+              </defs>
+
+              <svg:rect id="BG" fill="#D8D8D8" x="0" y="0" width="1024" height="768"></svg:rect>
+              <svg:rect id="rect1" fill="#000000" x="0" y="0" width="100" height="100"></svg:rect>
+              <svg:rect id="Rct2" fill="#000000" x="924" y="668" width="100" height="100"></svg:rect>
+
+              <svg:ellipse class="node" *ngFor="let point of points; let i = index" [attr.cx]="getPosX(i)" [attr.cy]="circle[1]" rx="30" ry="15" />
+
+            </svg:g>
+          </svg>
+
+        </div>
+      </div>
+    </swiper>
+  </div>
+
+</div>
