@@ -7,7 +7,7 @@ import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
   styleUrls: ['./metapath.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class MetapathComponent implements OnInit, AfterViewInit {
+export class MetapathComponent implements OnInit {
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('swiperWrapper') public swiperWrapper: any;
@@ -42,7 +42,6 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   };
 
   constructor() {
-
   }
 
   ngOnInit() {
@@ -52,7 +51,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-      this.Resize(event.target.innerWidth, event.target.innerHeight);
+    this.Resize(event.target.innerWidth, event.target.innerHeight);
   }
 
   public Resize(winW, winH) {
