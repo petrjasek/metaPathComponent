@@ -1,20 +1,19 @@
 .meta-path {
-  border: 1px solid black;
-  background-image: url("/assets/bg-dzungle.jpg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
 
-  display: flex;
-  justify-content: center;
-
+  box-sizing: border-box;
   * {
     box-sizing: border-box;
   }
+  display: flex;
+  justify-content: center;
+  position: relative;
 }
 
 .meta-path-container {
-  border: 1px solid greenyellow;
+  background-image: url("/assets/bg-dzungle.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
 }
 
 .meta-path {
@@ -26,24 +25,18 @@
 
   // deep overrides for swiper
 
-
   /deep/ {
-    .swiper-wrapper {
-      background-image: url("/assets/krivka.png");
-      background-repeat: repeat-x;
-      background-position: left center;
-    }
-
     .swiper-slide {
+      overflow: hidden;
+
       width: auto !important;
-      height: 75vw;
       max-width: none !important;
     }
   }
 }
 
 .content {
-  width: 1400px;
+  overflow: hidden;
 }
 
 .swiper-slide {
@@ -62,9 +55,7 @@
   }
 }
 
-.swiper-slide-active {
-  background-color: yellow;
-}
+.swiper-slide-active {}
 
 .node {
   cursor: pointer;
