@@ -55,25 +55,62 @@
   }
 }
 
-.swiper-slide-active {}
+.swiper-slide-active {
+}
 
 .node-next {
   cursor: pointer;
 }
+
 .node-current {
   cursor: pointer;
   fill: red;
   stroke: white;
 }
+
 .node-done {
-  pointer-events: none;
+  cursor: pointer;
   fill: green;
   stroke: white;
 }
+
 .node-next {
-  pointer-events: none;
+  cursor: pointer;
   fill: orange;
   stroke: white;
+}
+
+.player {
+  fill: deeppink;
+  stroke: red;
+  background-image: url("/assets/scene/player.png");
+
+}
+
+.player-group {
+  pointer-events: none;
+}
+
+.player-group.animate {
+
+  .player-group-mask {
+    animation: playMask 0.4s steps(3) infinite;
+  }
+  .player-group-image {
+    animation: playPlayer 0.4s steps(3) infinite;
+  }
+}
+
+@keyframes playPlayer {
+  100% {
+    transform: translate(-900px, 0);
+  }
+}
+
+@keyframes playMask {
+  100% {
+    transform: translate(900px, 0);
+  }
 }
 
 .button {
@@ -84,7 +121,7 @@
   color: yellow;
   background-color: green;
   border-radius: 10px;
-  padding: 20px 40px ;
+  padding: 20px 40px;
   border: 3px solid yellow;
 }
 

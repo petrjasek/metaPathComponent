@@ -17,8 +17,36 @@
                 [attr.cx]="getPosX(i)"
                 [attr.cy]="getPosY(i)" rx="24" ry="14" />
 
+              <svg:ellipse class="player"
+                [attr.cx]="getPlayerPosition(currentNodeIndex).x"
+                [attr.cy]="getPlayerPosition(currentNodeIndex).y"
+                rx="5"
+                ry="5"
+              ></svg:ellipse>
+
+            </svg:g>
+
+            <svg:g
+              class="player-group"
+              [ngClass]="{'animate':isWalking}"
+              [attr.transform]="getPlayerGroupTransform(currentNodeIndex, isWalking)"
+              [attr.cx]="getPlayerPosition(currentNodeIndex).x"
+              [attr.cy]="getPlayerPosition(currentNodeIndex).y"
+            >
+
+              <svg:clipPath id="playerMask">
+                <rect class="player-group-mask" x="0" y="0" width="300" height="300" fill="white"></rect>
+              </svg:clipPath>
+
+              <svg:image
+                class="player-group-image"
+                clip-path="url(#playerMask)"
+                attr.href="{{this.playeranim}}" height="300" width="900"/>
             </svg:g>
           </svg>
+
+          <!--<div class="html-player" [style.backgroundImage]="'url('+this.playeranim +')'"></div>-->
+
 
         </div>
       </div>
