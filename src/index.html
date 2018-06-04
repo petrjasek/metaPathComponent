@@ -14,6 +14,7 @@
       height: 100%;
 
     }
+
     body * {
       box-sizing: border-box;
     }
@@ -26,49 +27,90 @@
 <body>
 
 <script>
-  var pathpoints = [
-    {type: 'default', url: 'url1'},
-    {type: 'default', url: 'url2'},
-    {type: 'test',    url: 'url3'},
-    {type: 'default', url: 'url4'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'},
-    {type: 'default', url: 'pointURL'}
-  ]
 
+  var metapathConfig = {
+    pathpoints: [
+      {type: 'default', url: 'url1'},
+      {type: 'default', url: 'url2'},
+      {type: 'test', url: 'url3'},
+      {type: 'default', url: 'url4'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'}
+    ]
+  }
+
+  var metapathConfigX = {
+
+    pathId: 'seznamovani',
+
+    backgroundImageUrl: '/assets/scene/pastva/pastva-bg.jpg',
+    foregroundImageUrl: '/assets/scene/pastva/pastva-bg.jpg',
+    playerAnimationUrl: '/assets/scene/pastva/player.png',
+
+    path: {
+      color: 'orange',
+      pinNext: 'red',
+      pinPrev: 'blue',
+      pinCurrent: 'orange'
+    },
+
+    layers: [
+
+      {layer: 'butterfly'},
+      {layer: 'butterfly2'},
+      {layer: 'krtek'},
+
+    ],
+
+    pathpoints: [
+      {type: 'default', url: 'url1'},
+      {type: 'default', url: 'url2'},
+      {type: 'test', url: 'url3'},
+      {type: 'default', url: 'url4'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'}
+    ]
+
+
+  }
 </script>
 
 <div class="wrapper">
-<meta-path
-  pathid="pastva"
-  bgimage="/assets/scene/pastva/pastva-bg.jpg"
-  playeranim="/assets/scene/pastva/player.png"
-></meta-path>
-
+  <meta-path config="metapathConfigX"></meta-path>
 </div>
 </body>
 

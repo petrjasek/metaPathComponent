@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
 import {Cookie} from 'ng2-cookies';
+import {ConfigService} from './config.service';
 
 @Component({
   selector: 'meta-path',
@@ -11,17 +12,21 @@ import {Cookie} from 'ng2-cookies';
 export class MetapathComponent implements OnInit, AfterViewInit {
 
   @Input()
-  public playeranim: string;
-
-  @Input()
-  public bgimage: string;
-
+  public config = null;
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('swiperWrapper') public swiperWrapper: any;
   @ViewChild('player') public player: ElementRef;
 
-  cookies: Object;
+  private cs: ConfigService;
+
+  public playeranim: string;
+  public bgimage: string;
+  public pathcolor = 'green';
+  public nextcolor = 'darkgreen';
+  public previouscolor = 'lightgreen';
+
+  private cookies: Object;
   private cookieName = 'meta_quiz';
 
   private el: ElementRef;
@@ -63,7 +68,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
   currentNodeIndex = 1;
 
-  public config: SwiperConfigInterface = {
+  public swipe_config: SwiperConfigInterface = {
     direction: 'horizontal',
     freeMode: true,
     slidesPerView: 'auto',
@@ -75,49 +80,38 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     pagination: false
   };
 
-  constructor() {
+  constructor(private cconf: ConfigService) {
+    this.cs = cconf;
     this.cookies = Cookie.get(this.cookieName);
+
   }
 
   ngOnInit() {
+    this.cs.setConfig(this.config);
 
-    console.log('hey');
-    console.log(window['pathpoints']);
+    this.cs.logConfig();
 
-    if (window['pathpoints']) {
-      this.points = window['pathpoints'];
-    } else {
-      console.error('You need define pathpoints array');
-    }
+    this.points = this.cs.config.pathpoints;
+    this.pathcolor = this.cs.config.path.color;
+    this.nextcolor = this.cs.config.path.pinNext;
+    this.previouscolor = this.cs.config.path.pinPrev;
+    this.bgimage = this.cs.config.backgroundImageUrl;
+    this.playeranim = this.cs.config.playerAnimationUrl;
 
-    if (this.currentNodeIndex >= this.points.length) {
-      this.currentNodeIndex = this.points.length - 1;
-    }
+    //console.dir(this.cs.getLayers());
 
-    // refresh from cookie
-    if (this.cookies) {
-      console.log('mam cookinu: ' + this.cookies);
-      let cookieValue = +this.cookies * 1;
-      if (cookieValue >= this.points.length) {
-        cookieValue = this.points.length - 1;
-      }
-      this.currentNodeIndex = cookieValue;
-    }
-
+    this.fixIndex();
+    this.checkCookie();
     this.Resize(window.innerWidth, window.innerHeight);
     this.buildPath();
-
   }
 
+
   ngAfterViewInit(): void {
-
-
     this.swiperInstance = this.swiperWrapper.directiveRef.instance;
     this.contentWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
-
-
     this.setViewToPlayerPosition();
-    this.getHtmlScale();
+    this.setScaleTransform();
   }
 
 
@@ -125,6 +119,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   onResize(event) {
     this.Resize(event.target.innerWidth, event.target.innerHeight);
   }
+
 
   public Resize(winW, winH) {
     if (!this.updating) {
@@ -157,6 +152,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     }
   }
 
+
   public Update() {
     setTimeout(() => {
       this.swiperWrapper.directiveRef.update(true);
@@ -164,7 +160,26 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     }, 100);
   }
 
-  public onIndexChange(index: number): void {
+  private fixIndex() {
+    // prevent high index
+    if (this.currentNodeIndex >= this.points.length) {
+      this.currentNodeIndex = this.points.length - 1;
+    }
+    if (this.currentNodeIndex < 0) {
+      this.currentNodeIndex = 0;
+    }
+  }
+
+  private checkCookie() {
+    // refresh from cookie
+    if (this.cookies) {
+      console.log('mam cookinu: ' + this.cookies);
+      let cookieValue = +this.cookies * 1;
+      if (cookieValue >= this.points.length) {
+        cookieValue = this.points.length - 1;
+      }
+      this.currentNodeIndex = cookieValue;
+    }
   }
 
   public buildPath() {
@@ -235,7 +250,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     return y;
   }
 
-  getNodeClass(idx) {
+  pathPointClass(idx) {
     if (idx < this.currentNodeIndex) {
       return 'node-done';
     }
@@ -247,6 +262,16 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     return 'node-next';
   }
 
+  pathPointStyle(idx) {
+    if (idx < this.currentNodeIndex) {
+      return this.previouscolor;
+    }
+    if (idx === this.currentNodeIndex) {
+      return 'red';
+    }
+    return this.nextcolor;
+  }
+
   getPlayerPosition(idx, ratio = 1) {
     return {
       x: this.path[idx].x * ratio,
@@ -254,7 +279,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     };
   }
 
-  getHtmlScale() {
+  setScaleTransform() {
     let ratio = this.containerWidth / this.minWidth * 0.75;
     if (ratio > 1) {
       ratio = 1;
@@ -263,7 +288,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     return css;
   }
 
-  getHtmlPlayerGroupTransform(idx, dir) {
+  getPlayerTransform(idx, dir) {
 
     const ratio = this.containerWidth / this.minWidth;
     const pos = this.getPlayerPosition(idx, ratio);
@@ -282,13 +307,6 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     }
   }
 
-  goToPoint(dir) {
-    const newIndex = this.currentNodeIndex + dir;
-    if (newIndex >= 0 && newIndex < this.points.length) {
-      this.currentNodeIndex = newIndex;
-    }
-  }
-
   setViewToPlayerPosition() {
     // set view to player posiotion
     const ppos = this.getPlayerPosition(this.currentNodeIndex);
@@ -296,6 +314,13 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     if (ppos.x > this.minWidth) {
       const scroolOffset = (this.minWidth * numberOfScreens);
       this.translateSwiper(-scroolOffset);
+    }
+  }
+
+  goToPoint(dir) {
+    const newIndex = this.currentNodeIndex + dir;
+    if (newIndex >= 0 && newIndex < this.points.length) {
+      this.currentNodeIndex = newIndex;
     }
   }
 
@@ -314,22 +339,16 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   }
 
   public nodeClick(idx) {
-
     let dir = 1;
     if (idx < this.currentNodeIndex) {
       dir = -1;
     }
-
     this.movePlayerTo(dir, idx);
-
-    console.log('nodeClick' + idx);
   }
 
   public gotoUrl(idx) {
-
     const url = this.points[idx].url;
     console.log('gotoUrl: ' + url);
-
   }
 
 }
