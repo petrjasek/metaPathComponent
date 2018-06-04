@@ -1,7 +1,5 @@
 <div class="meta-path">
-  <div #container class="meta-path-container"
-    [style.backgroundImage]="'url('+bgimage+')'"    [style.width.px]="containerWidth"
-    [style.height.px]="containerHeight">
+  <div #container class="meta-path-container" [style.backgroundImage]="'url('+bgimage+')'" [style.width.px]="containerWidth" [style.height.px]="containerHeight">
     <swiper #swiperWrapper class="swiper-container" [config]="config" (indexChange)="onIndexChange($event)">
       <div class="swiper-slide">
         <div class="content" [style.height.px]="containerHeight">
@@ -10,42 +8,22 @@
 
               <svg:path id="path" stroke="yellow" stroke-linejoin="round" stroke-linecap="round" stroke-width="60" [attr.d]="pathString"></svg:path>
 
-              <svg:ellipse class="node" *ngFor="let point of points; let i = index"
-                stroke-width="3"
-                (click)="nodeClick(i)"
-                [ngClass]="getNodeClass(i)"
-                [attr.cx]="getPosX(i)"
-                [attr.cy]="getPosY(i)" rx="24" ry="14" />
+              <svg:ellipse class="node" *ngFor="let point of points; let i = index" stroke-width="3" (click)="nodeClick(i)" [ngClass]="getNodeClass(i)" [attr.cx]="getPosX(i)" [attr.cy]="getPosY(i)" rx="24" ry="14" />
 
-              <svg:ellipse  #player class="player"
-                [attr.cx]="getPlayerPosition(currentNodeIndex).x"
-                [attr.cy]="getPlayerPosition(currentNodeIndex).y"
-                rx="5"
-                ry="5"
-              ></svg:ellipse>
+              <svg:ellipse #player class="player" [attr.cx]="getPlayerPosition(currentNodeIndex).x" [attr.cy]="getPlayerPosition(currentNodeIndex).y" rx="5" ry="5"></svg:ellipse>
 
             </svg:g>
 
-            <svg:g
-
-              class="player-group"
-              [ngClass]="{'animate':isWalking}"
-              [attr.transform]="getPlayerGroupTransform(currentNodeIndex, isWalking)"
-              [attr.cx]="getPlayerPosition(currentNodeIndex).x"
-              [attr.cy]="getPlayerPosition(currentNodeIndex).y"
-            >
-
-              <svg:clipPath id="playerMask">
-                <rect class="player-group-mask" x="0" y="0" width="300" height="300" fill="white"></rect>
-              </svg:clipPath>
-
-              <svg:image
-                class="player-group-image"
-                clip-path="url(#playerMask)"
-                attr.href="{{this.playeranim}}" height="300" width="900"/>
-
-            </svg:g>
           </svg>
+
+          <div class="html-player"
+            [ngClass]="{'animate': (isWalking), 'animate-back': (isWalking < 0)}"
+            [style.transform]="getHtmlPlayerGroupTransform(currentNodeIndex, isWalking)">
+            <div class="html-player-scale" [style.transform]="getHtmlScale()">
+              <div class="html-player-image" [style.backgroundImage]="'url('+playeranim+')'"></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </swiper>

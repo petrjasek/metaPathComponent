@@ -61,7 +61,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
   pathString = '';
 
-  currentNodeIndex = 5;
+  currentNodeIndex = 1;
 
   public config: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -76,38 +76,48 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   };
 
   constructor() {
-
     this.cookies = Cookie.get(this.cookieName);
-
-    // prevent wrong index
-    if (this.currentNodeIndex >= this.points.length) {
-      this.currentNodeIndex = this.points.length - 1;
-    }
   }
 
   ngOnInit() {
 
+    console.log('hey');
+    console.log(window['pathpoints']);
+
     if (window['pathpoints']) {
       this.points = window['pathpoints'];
+    } else {
+      console.error('You need define pathpoints array');
+    }
+
+    if (this.currentNodeIndex >= this.points.length) {
+      this.currentNodeIndex = this.points.length - 1;
     }
 
     // refresh from cookie
     if (this.cookies) {
-      console.log('mam cookinu' + this.cookies);
-      this.currentNodeIndex = +this.cookies * 1;
+      console.log('mam cookinu: ' + this.cookies);
+      let cookieValue = +this.cookies * 1;
+      if (cookieValue >= this.points.length) {
+        cookieValue = this.points.length - 1;
+      }
+      this.currentNodeIndex = cookieValue;
     }
+
     this.Resize(window.innerWidth, window.innerHeight);
     this.buildPath();
 
   }
 
   ngAfterViewInit(): void {
+
+
     this.swiperInstance = this.swiperWrapper.directiveRef.instance;
     this.contentWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
 
 
-
     this.setViewToPlayerPosition();
+    this.getHtmlScale();
   }
 
 
@@ -235,19 +245,30 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     return 'node-next';
   }
 
-  getPlayerPosition(idx) {
+  getPlayerPosition(idx, ratio = 1) {
     return {
-      x: this.path[idx].x,
-      y: this.path[idx].y
+      x: this.path[idx].x * ratio,
+      y: this.path[idx].y * ratio
     };
   }
 
-  getPlayerGroupTransform(idx, dir) {
-    const pos = this.getPlayerPosition(idx);
-    let css = 'translate(' + (pos.x - 150) + ',' + (pos.y - 250) + ')';
+  getHtmlScale() {
+    let ratio = this.containerWidth / this.minWidth * 0.75;
+    if (ratio > 1) {
+      ratio = 1;
+    }
+    const css = 'scale(' + (ratio) + ')';
+    return css;
+  }
+
+  getHtmlPlayerGroupTransform(idx, dir) {
+
+    const ratio = this.containerWidth / this.minWidth;
+    const pos = this.getPlayerPosition(idx, ratio);
+    let css = 'translate(' + (pos.x) + 'px,' + (pos.y) + 'px)';
 
     if (dir < 0) {
-      css = 'translate(' + (pos.x + 150) + ',' + (pos.y - 250) + ')  scale(-1, 1)';
+      css = 'translate(' + (pos.x) + 'px,' + (pos.y) + 'px)';
     }
 
     return css;
