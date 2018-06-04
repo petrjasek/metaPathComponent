@@ -198,12 +198,14 @@ export class MetapathComponent implements OnInit, AfterViewInit {
       const __ret = this.buildPoint(i);
       this.path.push(__ret);
       if (i <= 0) {
-        localPathString = localPathString + 'M' + (__ret.x - this.pathStartOffset) + ',' + __ret.y + ', ';
+        localPathString = localPathString + 'M' + (__ret.x - this.pathStartOffset) + ',' + __ret.y + ' ';
       }
       localPathString = localPathString + __ret.svgCurve + __ret.x + ',' + __ret.y + ', ';
+
       if (i === this.points.length - 1) {
         localPathString = localPathString + 'L' + (__ret.x + this.pathEndOffset) + ',' + __ret.y + ', ';
       }
+
       // clean end coma (FF issue)
       localPathString = localPathString.substr(0, localPathString.length - 2);
       this.pathString = localPathString;
