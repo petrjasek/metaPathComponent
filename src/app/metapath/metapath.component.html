@@ -3,10 +3,11 @@
     <swiper #swiperWrapper class="swiper-container" [config]="swipe_config" (indexChange)="onIndexChange($event)">
       <div class="swiper-slide">
         <div class="content" [style.height.px]="containerHeight">
-          <svg [attr.viewBox]="'0 0 '+ cWidth +' 768'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <svg [attr.viewBox]="'0 0 '+ svgContentWidth +' 768'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <svg:g id="theme" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
 
-              <svg:path id="path" [attr.stroke]="pathcolor" stroke-linejoin="round" stroke-linecap="round" stroke-width="60" [attr.d]="pathString"></svg:path>
+              <svg:path *ngIf="pathOutline" id="pathOultine" [attr.stroke]="pathOutline" stroke-linejoin="round" stroke-linecap="round" stroke-width="70" [attr.d]="svgPathString" ></svg:path>
+              <svg:path id="path" [attr.stroke]="pathcolor" stroke-linejoin="round" stroke-linecap="round" stroke-width="60" [attr.d]="svgPathString"></svg:path>
 
               <svg:ellipse class="node" *ngFor="let point of points; let i = index" stroke-width="3"
                 (click)="nodeClick(i)"
@@ -37,7 +38,7 @@
 
     <div class="button button-next" (click)="goToPoint(1)">next</div>
     <div class="button button-prev" (click)="goToPoint(-1)">prev</div>
-    <div class="button button-help">help</div>
+    <div class="button button-help" >help</div>
 
   </div>
 

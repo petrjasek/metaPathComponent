@@ -34,4 +34,11 @@ export class ConfigService {
     return this.config.layers[idx];
   }
 
+
+  hasOutline(): boolean {
+    if (this.config.path.outline) {
+      return true;
+    }
+    return false;
+  }
 }

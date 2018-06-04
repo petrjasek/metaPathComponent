@@ -14,59 +14,63 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   @Input()
   public config = null;
 
-  @ViewChild('container') container: ElementRef;
-  @ViewChild('swiperWrapper') public swiperWrapper: any;
-  @ViewChild('player') public player: ElementRef;
+  @ViewChild('container') private container: ElementRef;
+  @ViewChild('swiperWrapper') private swiperWrapper: any;
+  private swiperInstance: any = null;
 
   private cs: ConfigService;
+  public points = [];
+  public path = [];
+
+  // cookies
+
+  private cookies: Object;
+  private cookieName = 'meta_quiz';
+
+  // assets
 
   public playeranim: string;
   public bgimage: string;
   public pathcolor = 'green';
   public nextcolor = 'darkgreen';
   public previouscolor = 'lightgreen';
+  public pathOutline = null;
 
-  private cookies: Object;
-  private cookieName = 'meta_quiz';
-
-  private el: ElementRef;
-  private wrapper: ElementRef;
-  private updating = false;
-
-  public containerWidth = 1024;
-  public containerHeight = 768;
-  public ratio = 0.75;
-  public minWidth = 1024;
-  public minHeight = 1024;
-  public keepMinSize = false;
-
-  public cWidth = 2000;
-  public circle = [200, 384];
-
-  public points = [];
-  public path = [];
-  private lastItemX = 0;
-  private timer;
   private walkingSpeed = 200;
+
+
+  // states
+  currentNodeIndex = 1;
+  private updating = false;
   private isWalking = 0;
 
-  private swiperInstance: any = null;
-  private contentWidth = 0;
+  // size
+  private containerWidth = 1024;
+  private containerHeight = 768;
+  private ratio = 0.75;
+  private minWidth = 1024;
+  private minHeight = 1024;
+  private keepMinSize = false;
 
+  // calculations
+  private svgContentWidth = 2000;
+  private swiperWidth = 0;
+
+  // helpers
+  private lastItemX = 0;
+  private timer;
+  private svgPathString = '';
+
+  // path generation params
   smooth = 10;
   stepSmoothDelta = 3;
   halfYOffset = 384;
   halfYOffsetsLess = [-1, 50, 70, 80, 50, -0, 0, -90, -100, -100, -100];
-
   pathPointsSpace = 100;
   pathStartOffset = 100;
   pathEndOffset = 100;
-
   amplitudeY = 205;
 
-  pathString = '';
-
-  currentNodeIndex = 1;
 
   public swipe_config: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -83,14 +87,11 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   constructor(private cconf: ConfigService) {
     this.cs = cconf;
     this.cookies = Cookie.get(this.cookieName);
-
   }
 
   ngOnInit() {
     this.cs.setConfig(this.config);
-
-    this.cs.logConfig();
-
+    // this.cs.logConfig();
     this.points = this.cs.config.pathpoints;
     this.pathcolor = this.cs.config.path.color;
     this.nextcolor = this.cs.config.path.pinNext;
@@ -98,6 +99,9 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     this.bgimage = this.cs.config.backgroundImageUrl;
     this.playeranim = this.cs.config.playerAnimationUrl;
 
+    if (this.cs.hasOutline()) {
+      this.pathOutline = this.cs.config.path.outline;
+    }
     //console.dir(this.cs.getLayers());
 
     this.fixIndex();
@@ -109,7 +113,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.swiperInstance = this.swiperWrapper.directiveRef.instance;
-    this.contentWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
+    this.swiperWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
     this.setViewToPlayerPosition();
     this.setScaleTransform();
   }
@@ -206,7 +210,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     }
 
     // adjust size of svg
-    this.cWidth = this.pathStartOffset + this.pathEndOffset + ((this.points.length - 1) * this.pathPointsSpace);
+    this.svgContentWidth = this.pathStartOffset + this.pathEndOffset + ((this.points.length - 1) * this.pathPointsSpace);
 
     let localPathString = '';
     for (let i = 0; i < this.points.length; i++) {
@@ -223,7 +227,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
       // clean end coma (FF issue)
       localPathString = localPathString.substr(0, localPathString.length - 2);
-      this.pathString = localPathString;
+      this.svgPathString = localPathString;
     }
 
   }
