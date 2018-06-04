@@ -10,7 +10,6 @@
 }
 
 .meta-path-container {
-  background-image: url("/assets/bg-dzungle.jpg");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center top;
@@ -82,9 +81,6 @@
 
 .player {
   fill: deeppink;
-  stroke: red;
-  background-image: url("/assets/scene/player.png");
-
 }
 
 .player-group {
@@ -94,10 +90,10 @@
 .player-group.animate {
 
   .player-group-mask {
-    animation: playMask 0.4s steps(3) infinite;
+    animation: playMask 0.3s steps(3) infinite;
   }
   .player-group-image {
-    animation: playPlayer 0.4s steps(3) infinite;
+    animation: playPlayer 0.3s steps(3) infinite;
   }
 }
 

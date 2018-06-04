@@ -1,5 +1,6 @@
 import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
+import {Cookie} from 'ng2-cookies';
 
 @Component({
   selector: 'meta-path',
@@ -7,15 +8,21 @@ import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
   styleUrls: ['./metapath.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class MetapathComponent implements OnInit {
+export class MetapathComponent implements OnInit, AfterViewInit {
 
   @Input()
   public playeranim: string;
 
+  @Input()
+  public bgimage: string;
+
 
   @ViewChild('container') container: ElementRef;
   @ViewChild('swiperWrapper') public swiperWrapper: any;
+  @ViewChild('player') public player: ElementRef;
 
+  cookies: Object;
+  private cookieName = 'meta_quiz';
 
   private el: ElementRef;
   private wrapper: ElementRef;
@@ -31,15 +38,15 @@ export class MetapathComponent implements OnInit {
   public cWidth = 2000;
   public circle = [200, 384];
 
-  public points = [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
-
-  //public points = [1, 2, 3, 4, 5];
-
+  public points = [];
   public path = [];
   private lastItemX = 0;
   private timer;
-  private walkingSpeed = 300;
+  private walkingSpeed = 200;
   private isWalking = 0;
+
+  private swiperInstance: any = null;
+  private contentWidth = 0;
 
   smooth = 10;
   stepSmoothDelta = 3;
@@ -69,6 +76,9 @@ export class MetapathComponent implements OnInit {
   };
 
   constructor() {
+
+    this.cookies = Cookie.get(this.cookieName);
+
     // prevent wrong index
     if (this.currentNodeIndex >= this.points.length) {
       this.currentNodeIndex = this.points.length - 1;
@@ -76,11 +86,30 @@ export class MetapathComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    if (window['pathpoints']) {
+      this.points = window['pathpoints'];
+    }
+
+    // refresh from cookie
+    if (this.cookies) {
+      console.log('mam cookinu' + this.cookies);
+      this.currentNodeIndex = +this.cookies * 1;
+    }
     this.Resize(window.innerWidth, window.innerHeight);
-    console.log(this.playeranim);
     this.buildPath();
-    // console.dir(this.swiperWrapper.directiveRef);
+
   }
+
+  ngAfterViewInit(): void {
+    this.swiperInstance = this.swiperWrapper.directiveRef.instance;
+    this.contentWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
+
+
+
+    this.setViewToPlayerPosition();
+  }
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -134,7 +163,10 @@ export class MetapathComponent implements OnInit {
     this.path = [];
 
     // adjust startoffset for small amont of points to adjust horizontal centering shorter curves
+
     const area = (this.points.length - 1) * this.pathPointsSpace;
+    console.log(this.points.length);
+
     if (area < this.minWidth) {
       const offset = (this.minWidth - area) / 2;
       this.pathStartOffset = offset;
@@ -154,9 +186,7 @@ export class MetapathComponent implements OnInit {
     let localPathString = '';
     for (let i = 0; i < this.points.length; i++) {
       const __ret = this.buildPoint(i);
-
       this.path.push(__ret);
-
       if (i <= 0) {
         localPathString = localPathString + 'M' + (__ret.x - this.pathStartOffset) + ',' + __ret.y + ', ';
       }
@@ -169,7 +199,6 @@ export class MetapathComponent implements OnInit {
       this.pathString = localPathString;
     }
 
-    console.dir(this.path);
   }
 
   private buildPoint(i: number) {
@@ -224,6 +253,11 @@ export class MetapathComponent implements OnInit {
     return css;
   }
 
+  translateSwiper(offset) {
+    if (this.swiperInstance) {
+      this.swiperInstance.setTranslate(offset, 0);
+    }
+  }
 
   goToPoint(dir) {
     const newIndex = this.currentNodeIndex + dir;
@@ -232,14 +266,26 @@ export class MetapathComponent implements OnInit {
     }
   }
 
+  setViewToPlayerPosition() {
+    // set view to player posiotion
+    const ppos = this.getPlayerPosition(this.currentNodeIndex);
+    const numberOfScreens = ppos.x / this.minWidth;
+    if (ppos.x > this.minWidth) {
+      const scroolOffset = (this.minWidth * numberOfScreens);
+      this.translateSwiper(-scroolOffset);
+    }
+  }
+
   movePlayerTo(dir, targetIdx) {
     this.isWalking = dir;
     this.timer = setInterval(() => {
       this.currentNodeIndex = this.currentNodeIndex + dir;
+
       if (this.currentNodeIndex === targetIdx) {
         this.isWalking = 0;
         clearInterval(this.timer);
-        this.gotoUrl();
+        Cookie.set(this.cookieName, this.currentNodeIndex.toString());
+        this.gotoUrl(this.currentNodeIndex);
       }
     }, this.walkingSpeed);
   }
@@ -256,8 +302,11 @@ export class MetapathComponent implements OnInit {
     console.log('nodeClick' + idx);
   }
 
-  public gotoUrl() {
-    console.log('gotoUrl');
+  public gotoUrl(idx) {
+
+    const url = this.points[idx].url;
+    console.log('gotoUrl: ' + url);
+
   }
 
 }

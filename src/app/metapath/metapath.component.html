@@ -1,6 +1,6 @@
 <div class="meta-path">
   <div #container class="meta-path-container"
-    [style.width.px]="containerWidth"
+    [style.backgroundImage]="'url('+bgimage+')'"    [style.width.px]="containerWidth"
     [style.height.px]="containerHeight">
     <swiper #swiperWrapper class="swiper-container" [config]="config" (indexChange)="onIndexChange($event)">
       <div class="swiper-slide">
@@ -17,7 +17,7 @@
                 [attr.cx]="getPosX(i)"
                 [attr.cy]="getPosY(i)" rx="24" ry="14" />
 
-              <svg:ellipse class="player"
+              <svg:ellipse  #player class="player"
                 [attr.cx]="getPlayerPosition(currentNodeIndex).x"
                 [attr.cy]="getPlayerPosition(currentNodeIndex).y"
                 rx="5"
@@ -27,6 +27,7 @@
             </svg:g>
 
             <svg:g
+
               class="player-group"
               [ngClass]="{'animate':isWalking}"
               [attr.transform]="getPlayerGroupTransform(currentNodeIndex, isWalking)"
@@ -42,12 +43,9 @@
                 class="player-group-image"
                 clip-path="url(#playerMask)"
                 attr.href="{{this.playeranim}}" height="300" width="900"/>
+
             </svg:g>
           </svg>
-
-          <!--<div class="html-player" [style.backgroundImage]="'url('+this.playeranim +')'"></div>-->
-
-
         </div>
       </div>
     </swiper>
