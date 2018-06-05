@@ -42,24 +42,24 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   // states
   currentNodeIndex = 1;
   private updating = false;
-  private isWalking = 0;
+  isWalking = 0;
 
   // size
-  private containerWidth = 1024;
-  private containerHeight = 768;
+  containerWidth = 1024;
+  containerHeight = 768;
   private ratio = 0.75;
   private minWidth = 1024;
   private minHeight = 1024;
   private keepMinSize = false;
 
   // calculations
-  private svgContentWidth = 2000;
-  private swiperWidth = 0;
+  svgContentWidth = 2000;
+  swiperWidth = 0;
 
   // helpers
   private lastItemX = 0;
   private timer;
-  private svgPathString = '';
+  svgPathString = '';
 
   // path generation params
   smooth = 10;

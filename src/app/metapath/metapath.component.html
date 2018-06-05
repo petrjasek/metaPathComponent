@@ -1,6 +1,6 @@
 <div class="meta-path">
   <div #container class="meta-path-container" [style.backgroundImage]="'url('+bgimage+')'" [style.width.px]="containerWidth" [style.height.px]="containerHeight">
-    <swiper #swiperWrapper class="swiper-container" [config]="swipe_config" (indexChange)="onIndexChange($event)">
+    <swiper #swiperWrapper class="swiper-container" [config]="swipe_config">
       <div class="swiper-slide">
         <div class="content" [style.height.px]="containerHeight">
           <svg [attr.viewBox]="'0 0 '+ svgContentWidth +' 768'" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
