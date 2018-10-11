@@ -36,9 +36,20 @@
       </div>
     </swiper>
 
+    <div #helpContainer class="meta-path-help" *ngIf="helpVisible">
+      <div class="meta-path-help-content">
+          <!--<div class="close-button" (click)="toggleHelp()">Zavřít</div>-->
+          <h2>This is help</h2>
+          <p>this is help content</p>
+          <div class="dialog-footer button-group">
+              <button class="button button-dialog" (click)="toggleHelp()">Zavřít</button>
+          </div>
+      </div>
+    </div>
+
     <div class="button button-next" (click)="goToPoint(1)">next</div>
     <div class="button button-prev" (click)="goToPoint(-1)">prev</div>
-    <div class="button button-help" >help</div>
+    <div class="button button-help" (click)="toggleHelp()">help</div>
 
   </div>
 

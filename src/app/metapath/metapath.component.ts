@@ -38,6 +38,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     private walkingSpeed = 200;
 
+    private helpVisible = false;
 
     // states
     currentNodeIndex = 1;
@@ -49,8 +50,8 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     containerHeight = 768;
     private ratio = 0.75;
     private minWidth = 1024;
-    private minHeight = 1024;
-    private keepMinSize = false;
+    private minHeight = 768;
+    private keepMinSize = true;
 
     // calculations
     svgContentWidth = 2000;
@@ -330,17 +331,20 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     }
 
     movePlayerTo(dir, targetIdx) {
-        this.isWalking = dir;
-        this.timer = setInterval(() => {
-            this.currentNodeIndex = this.currentNodeIndex + dir;
+        if (!this.isWalking) {
 
-            if (this.currentNodeIndex === targetIdx) {
-                this.isWalking = 0;
-                clearInterval(this.timer);
-                Cookie.set(this.cookieName, this.currentNodeIndex.toString());
-                this.gotoUrl(this.currentNodeIndex);
-            }
-        }, this.walkingSpeed);
+            this.isWalking = dir;
+            this.timer = setInterval(() => {
+                this.currentNodeIndex = this.currentNodeIndex + dir;
+
+                if (this.currentNodeIndex === targetIdx) {
+                    this.isWalking = 0;
+                    clearInterval(this.timer);
+                    Cookie.set(this.cookieName, this.currentNodeIndex.toString());
+                    this.gotoUrl(this.currentNodeIndex);
+                }
+            }, this.walkingSpeed);
+        }
     }
 
     public nodeClick(idx) {
@@ -349,6 +353,10 @@ export class MetapathComponent implements OnInit, AfterViewInit {
             dir = -1;
         }
         this.movePlayerTo(dir, idx);
+    }
+
+    public toggleHelp() {
+        this.helpVisible = !this.helpVisible;
     }
 
     public gotoUrl(idx) {
