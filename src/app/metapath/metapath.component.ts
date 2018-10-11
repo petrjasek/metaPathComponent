@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, On
 import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
 import {Cookie} from 'ng2-cookies';
 import {ConfigService} from './config.service';
+import pp = jasmine.pp;
 
 @Component({
     selector: 'meta-path',
@@ -65,12 +66,13 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     // path generation params
     smooth = 10;
     stepSmoothDelta = 3;
-    halfYOffset = 384;
+    private halfYPosition;
+    private halfYOffset = 50;
     halfYOffsetsLess = [-1, 50, 70, 80, 50, -0, 0, -90, -100, -100, -100];
     pathPointsSpace = 100;
     pathStartOffset = 100;
     pathEndOffset = 100;
-    amplitudeY = 205;
+    amplitudeY = 200;
 
 
     public swipe_config: SwiperConfigInterface = {
@@ -118,6 +120,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         this.swiperWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
         this.setViewToPlayerPosition();
         this.setScaleTransform();
+        //console.dir(this.swiperInstance.getTranslate());
     }
 
 
@@ -179,7 +182,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     private checkCookie() {
         // refresh from cookie
         if (this.cookies) {
-            console.log('mam cookinu: ' + this.cookies);
+            //console.log('mam cookinu: ' + this.cookies);
             let cookieValue = +this.cookies * 1;
             if (cookieValue >= this.points.length) {
                 cookieValue = this.points.length - 1;
@@ -196,7 +199,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         // adjust startoffset for small amont of points to adjust horizontal centering shorter curves
 
         const area = (this.points.length - 1) * this.pathPointsSpace;
-        console.log(this.points.length);
+        //console.log(this.points.length);
 
         if (area < this.minWidth) {
             const offset = (this.minWidth - area) / 2;
@@ -206,9 +209,9 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
 
         // set new half offset for centering different curves
-        this.halfYOffset = this.minHeight / 2 - 160;
+        this.halfYPosition = this.minHeight / 2 - this.halfYOffset;
         if (this.points.length <= 10) {
-            this.halfYOffset = this.minHeight / 2 + this.halfYOffsetsLess[this.points.length];
+            this.halfYPosition = this.minHeight / 2 + this.halfYOffsetsLess[this.points.length];
         }
 
         // adjust size of svg
@@ -239,7 +242,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         const x = (i * this.pathPointsSpace) + this.pathStartOffset;
         //  y
         const helpx = ((i / this.smooth) * this.stepSmoothDelta);
-        const y = -1 * (Math.cos(helpx) * this.amplitudeY) + this.halfYOffset;
+        const y = -1 * (Math.cos(helpx) * this.amplitudeY) + this.halfYPosition;
         const svgCurve = 'L';
         return {x, y, svgCurve};
     }
@@ -252,7 +255,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     getPosY(idx) {
         const x = (((idx) / this.smooth) * this.stepSmoothDelta);
-        const y = -1 * (Math.cos(x) * this.amplitudeY) + this.halfYOffset;
+        const y = -1 * (Math.cos(x) * this.amplitudeY) + this.halfYPosition;
         return y;
     }
 
@@ -315,6 +318,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     setViewToPlayerPosition() {
         // set view to player posiotion
+
         const ppos = this.getPlayerPosition(this.currentNodeIndex);
         const numberOfScreens = ppos.x / this.minWidth;
         if (ppos.x > this.minWidth) {
@@ -342,6 +346,23 @@ export class MetapathComponent implements OnInit, AfterViewInit {
                     clearInterval(this.timer);
                     Cookie.set(this.cookieName, this.currentNodeIndex.toString());
                     this.gotoUrl(this.currentNodeIndex);
+
+// //                    this.setViewToPlayerPosition();
+//                     const xoffs = this.swiperInstance.getTranslate('x');
+//                     // console.dir(xoffs);
+//
+//
+//                     const xmax = xoffs + this.containerWidth;
+//                     const pPos = this.getPlayerPosition(this.currentNodeIndex).x * this.ratio;
+//
+//                     console.log(xoffs);
+//                     console.log(xmax);
+//                     console.log(pPos);
+
+                     // if(pPos > xmax) {
+                     //    this.swiperInstance.setTranslate(xoffs - 100);
+                     // }
+
                 }
             }, this.walkingSpeed);
         }
