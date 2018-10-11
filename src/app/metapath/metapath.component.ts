@@ -368,9 +368,9 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 //                     console.log(xmax);
 //                     console.log(pPos);
 
-                     // if(pPos > xmax) {
-                     //    this.swiperInstance.setTranslate(xoffs - 100);
-                     // }
+                    // if(pPos > xmax) {
+                    //    this.swiperInstance.setTranslate(xoffs - 100);
+                    // }
 
                 }
             }, this.walkingSpeed);
@@ -392,6 +392,33 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     public gotoUrl(idx) {
         const url = this.points[idx].url;
         console.log('gotoUrl: ' + url);
+    }
+
+    public getAnimClass(animtype: string = 'none') {
+
+        return 'layer-anim-' + animtype;
+    }
+
+    public setLayerTranslateY(layer) {
+        let pos = 0;
+        if (layer.position) {
+            pos = layer.position.y;
+        }
+        return (pos);
+    }
+    public setLayerTranslateX(layer) {
+        let pos = 0;
+        if (layer.position) {
+            pos = layer.position.x;
+        }
+        return (pos);
+    }
+    public setLayerSpriteAnim(layer) {
+        let css = 'layer-sprite-anim-none';
+        if (layer.spriteanim) {
+            css = 'layer-sprite-anim-step';
+        }
+        return (css);
     }
 
 }

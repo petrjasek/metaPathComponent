@@ -46,7 +46,11 @@
     },
 
     layers: [
-      {layer: 'butterfly', asset:'/assets/tmp/sprite150.jpg'},
+      {layer: 'butterfly', asset:'/assets/tmp/sprite150.jpg', anim: 'left-right', position: {x: 0, y:600}},
+      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.png', anim: 'right-left', spriteanim: true},
+      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.jpg', anim: 'none', position: {x: 200, y:400}, spriteanim: true},
+      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.jpg', anim: 'left-blip', position: {y:400}, spriteanim: true},
+      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.jpg', anim: 'right-blip', position: {y:200}, spriteanim: true},
     ],
 
     pathpoints: [

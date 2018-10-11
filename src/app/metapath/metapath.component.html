@@ -37,12 +37,17 @@
     </swiper>
 
       <div class="layers">
-          <div class="layers-content" [style.width.px]="containerWidth" [style.height.px]="containerHeight">
+          <div class="layers-content" [style.width.px]="1024" [style.height.px]="768" [style.transform]="getLayerRatioTransform()">
 
               <ng-container *ngFor="let layer of cs.getLayers()">
 
-                  <div class="layer"[style.transform]="getLayerRatioTransform()" >
-                      <img src="{{layer.asset}}">
+                  <div class="layer" [ngClass]="getAnimClass(layer.anim)" [style.left.px]="setLayerTranslateX(layer)" [style.top.px]="setLayerTranslateY(layer)"  >
+                      <div class="sprite"
+                          [style.backgroundImage]="'url('+ layer.asset +')'"
+                            [ngClass]="setLayerSpriteAnim(layer)"
+                          >
+
+                      </div>
                   </div>
               </ng-container>
 
