@@ -324,7 +324,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
   goToPoint(dir) {
     const newIndex = this.currentNodeIndex + dir;
     if (newIndex >= 0 && newIndex < this.points.length) {
-      this.currentNodeIndex = newIndex;
+        this.movePlayerTo(dir, newIndex);
     }
   }
 

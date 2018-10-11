@@ -4,10 +4,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "build": "ng build --prod --output-hashing=none",
+    "package": "cat dist/elementsApp/{runtime,polyfills,scripts,main}.js | gzip > elements.js.gz"
   },
   "private": true,
   "dependencies": {
