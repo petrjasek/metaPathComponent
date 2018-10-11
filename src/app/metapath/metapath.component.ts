@@ -106,7 +106,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
             this.pathOutline = this.cs.config.path.outline;
         }
 
-        // console.dir(this.cs.getLayers());
+        console.dir(this.cs.getLayers());
 
         this.fixIndex();
         this.checkCookie();
@@ -309,6 +309,15 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
         return css;
     }
+
+
+    getLayerRatioTransform() {
+        const ratio = this.containerWidth / this.minWidth;
+        const scaleRatio = ratio;
+        const css = 'scale(' + (scaleRatio) + ',' + (scaleRatio) + ')';
+        return css;
+    }
+
 
     translateSwiper(offset) {
         if (this.swiperInstance) {

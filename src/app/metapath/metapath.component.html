@@ -36,7 +36,21 @@
       </div>
     </swiper>
 
-    <div #helpContainer class="meta-path-help" *ngIf="helpVisible">
+      <div class="layers">
+          <div class="layers-content" [style.width.px]="containerWidth" [style.height.px]="containerHeight">
+
+              <ng-container *ngFor="let layer of cs.getLayers()">
+
+                  <div class="layer"[style.transform]="getLayerRatioTransform()" >
+                      <img src="{{layer.asset}}">
+                  </div>
+              </ng-container>
+
+          </div>
+      </div>
+
+
+      <div #helpContainer class="meta-path-help" *ngIf="helpVisible">
       <div class="meta-path-help-content">
           <!--<div class="close-button" (click)="toggleHelp()">Zavřít</div>-->
           <h2>This is help</h2>
