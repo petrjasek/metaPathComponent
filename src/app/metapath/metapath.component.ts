@@ -1,8 +1,19 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    HostListener,
+    Inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
 import {Cookie} from 'ng2-cookies';
 import {ConfigService} from './config.service';
-import pp = jasmine.pp;
+import {DOCUMENT} from '@angular/common';
 
 @Component({
     selector: 'meta-path',
@@ -15,6 +26,20 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     @Input()
     public config = null;
 
+    @Input() redirect = true;
+
+    // assets
+    public playeranim: string;
+    public bgimage: string;
+    public pathcolor = 'green';
+
+    // pin colors
+    public nextPinColor = 'darkgreen';
+    public previousPinColor = 'lightgreen';
+    public currentPinColor = 'orange';
+
+    public redirectTimeout = 500;
+
     @ViewChild('container') private container: ElementRef;
     @ViewChild('swiperWrapper') private swiperWrapper: any;
     private swiperInstance: any = null;
@@ -24,27 +49,20 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     public path = [];
 
     // cookies
-
     private cookies: Object;
     private cookieName = 'meta_quiz';
 
-    // assets
 
-    public playeranim: string;
-    public bgimage: string;
-    public pathcolor = 'green';
-    public nextcolor = 'darkgreen';
-    public previouscolor = 'lightgreen';
     public pathOutline = null;
-
     private walkingSpeed = 200;
 
+    // force show help
     private helpVisible = false;
 
     // states
-    currentNodeIndex = 1;
+    private currentNodeIndex = 1;
     private updating = false;
-    isWalking = 0;
+    private isWalking = 0;
 
     // size
     containerWidth = 1024;
@@ -55,24 +73,26 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     private keepMinSize = true;
 
     // calculations
-    svgContentWidth = 2000;
-    swiperWidth = 0;
+    private svgContentWidth = 2000;
+    private swiperWidth = 0;
 
     // helpers
     private lastItemX = 0;
     private timer;
-    svgPathString = '';
+    private svgPathString = '';
 
     // path generation params
-    smooth = 10;
-    stepSmoothDelta = 3;
+    private smooth = 10;
+    private stepSmoothDelta = 3;
     private halfYPosition;
-    private halfYOffset = 50;
-    halfYOffsetsLess = [-1, 50, 70, 80, 50, -0, 0, -90, -100, -100, -100];
-    pathPointsSpace = 100;
-    pathStartOffset = 100;
-    pathEndOffset = 100;
-    amplitudeY = 200;
+
+    private halfYOffset = -50;
+
+    private halfYOffsetsLess = [-1, 50, 70, 80, 50, -0, 0, -90, -100, -100, -100];
+    private pathPointsSpace = 100;
+    private pathStartOffset = 100;
+    private pathEndOffset = 100;
+    private amplitudeY = 200;
 
 
     public swipe_config: SwiperConfigInterface = {
@@ -87,18 +107,20 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         pagination: false
     };
 
-    constructor(private cconf: ConfigService) {
+    constructor(private cconf: ConfigService, @Inject(DOCUMENT) private document: any) {
         this.cs = cconf;
         this.cookies = Cookie.get(this.cookieName);
     }
 
     ngOnInit() {
+
         this.cs.setConfig(this.config);
-        // this.cs.logConfig();
+
         this.points = this.cs.config.pathpoints;
         this.pathcolor = this.cs.config.path.color;
-        this.nextcolor = this.cs.config.path.pinNext;
-        this.previouscolor = this.cs.config.path.pinPrev;
+        this.nextPinColor = this.cs.config.path.pinNext;
+        this.previousPinColor = this.cs.config.path.pinPrev;
+        this.currentPinColor = this.cs.config.path.pinCurrent;
         this.bgimage = this.cs.config.backgroundImageUrl;
         this.playeranim = this.cs.config.playerAnimationUrl;
 
@@ -106,10 +128,11 @@ export class MetapathComponent implements OnInit, AfterViewInit {
             this.pathOutline = this.cs.config.path.outline;
         }
 
-        console.dir(this.cs.getLayers());
-
         this.fixIndex();
-        this.checkCookie();
+
+        // get last index from cookie
+        this.loadIndexFromCookie();
+
         this.Resize(window.innerWidth, window.innerHeight);
         this.buildPath();
     }
@@ -120,7 +143,6 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         this.swiperWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
         this.setViewToPlayerPosition();
         this.setScaleTransform();
-        //console.dir(this.swiperInstance.getTranslate());
     }
 
 
@@ -179,10 +201,9 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         }
     }
 
-    private checkCookie() {
+    private loadIndexFromCookie() {
         // refresh from cookie
         if (this.cookies) {
-            //console.log('mam cookinu: ' + this.cookies);
             let cookieValue = +this.cookies * 1;
             if (cookieValue >= this.points.length) {
                 cookieValue = this.points.length - 1;
@@ -197,9 +218,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         this.path = [];
 
         // adjust startoffset for small amont of points to adjust horizontal centering shorter curves
-
         const area = (this.points.length - 1) * this.pathPointsSpace;
-        //console.log(this.points.length);
 
         if (area < this.minWidth) {
             const offset = (this.minWidth - area) / 2;
@@ -273,12 +292,12 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     pathPointStyle(idx) {
         if (idx < this.currentNodeIndex) {
-            return this.previouscolor;
+            return this.previousPinColor;
         }
         if (idx === this.currentNodeIndex) {
-            return 'red';
+            return this.currentPinColor;
         }
-        return this.nextcolor;
+        return this.nextPinColor;
     }
 
     getPlayerPosition(idx, ratio = 1) {
@@ -391,7 +410,13 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     public gotoUrl(idx) {
         const url = this.points[idx].url;
-        console.log('gotoUrl: ' + url);
+        if (this.redirect === true || this.redirect === 'true') {
+            setTimeout(function () {
+                this.document.location.href = url;
+            }, this.redirectTimeout);
+        } else {
+            console.warn('redirect=false - debug target url: ' + url);
+        }
     }
 
     public getAnimClass(animtype: string = 'none') {
@@ -406,6 +431,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         }
         return (pos);
     }
+
     public setLayerTranslateX(layer) {
         let pos = 0;
         if (layer.position) {
@@ -413,6 +439,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         }
         return (pos);
     }
+
     public setLayerSpriteAnim(layer) {
         let css = 'layer-sprite-anim-none';
         if (layer.spriteanim) {

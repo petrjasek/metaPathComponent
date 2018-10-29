@@ -242,6 +242,7 @@
     position: relative;
     overflow: hidden;
     z-index: 1100;
+    pointer-events: none;
 }
 
 .layer {
