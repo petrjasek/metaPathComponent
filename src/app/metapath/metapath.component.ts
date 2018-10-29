@@ -46,7 +46,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     @ViewChild('swiperWrapper') private swiperWrapper: any;
     private swiperInstance: any = null;
 
-    private cs: ConfigService;
+    cs: ConfigService;
     public points = [];
     public path = [];
 
@@ -59,12 +59,12 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     private walkingSpeed = 200;
 
     // force show help
-    private helpVisible = false;
+    helpVisible = false;
 
     // states
-    private currentNodeIndex = 1;
+    currentNodeIndex = 1;
     private updating = false;
-    private isWalking = 0;
+    isWalking = 0;
 
     // size
     containerWidth = 1024;
@@ -75,13 +75,13 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     private keepMinSize = true;
 
     // calculations
-    private svgContentWidth = 2000;
+    svgContentWidth = 2000;
     private swiperWidth = 0;
 
     // helpers
     private lastItemX = 0;
     private timer;
-    private svgPathString = '';
+    svgPathString = '';
 
     // path generation params
     private smooth = 10;
