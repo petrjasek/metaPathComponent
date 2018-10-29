@@ -28,6 +28,8 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     @Input() redirect = true;
 
+    @Input() startindex = 0;
+
     // assets
     public playeranim: string;
     public bgimage: string;
@@ -128,10 +130,13 @@ export class MetapathComponent implements OnInit, AfterViewInit {
             this.pathOutline = this.cs.config.path.outline;
         }
 
-        this.fixIndex();
-
         // get last index from cookie
-        this.loadIndexFromCookie();
+        // this.loadIndexFromCookie();
+
+        const idx = Number(this.startindex);
+        this.currentNodeIndex = idx;
+
+        this.fixIndex();
 
         this.Resize(window.innerWidth, window.innerHeight);
         this.buildPath();
@@ -211,6 +216,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
             this.currentNodeIndex = cookieValue;
         }
     }
+
 
     public buildPath() {
 
