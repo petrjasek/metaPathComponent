@@ -2,27 +2,10 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="aspectx=device-aspectx, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-
-    }
-
-    body * {
-      box-sizing: border-box;
-    }
-
-    .wrapper {
-      overflow: hidden;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="aspectx=device-aspectx, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
 </head>
 
 <body>
@@ -47,11 +30,29 @@
     },
 
     layers: [
-      {layer: 'butterfly', asset:'/assets/tmp/sprite150.jpg', anim: 'left-right', position: {x: 0, y:600}},
-      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.png', anim: 'right-left', spriteanim: true},
-      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.jpg', anim: 'none', position: {x: 200, y:400}, spriteanim: true},
-      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.jpg', anim: 'left-blip', position: {y:400}, spriteanim: true},
-      {layer: 'butterfly', asset:'/assets/tmp/sprite3x150.jpg', anim: 'right-blip', position: {y:200}, spriteanim: true},
+      {layer: 'butterfly', asset: '/assets/tmp/sprite150.jpg', anim: 'left-right', position: {x: 0, y: 600}},
+      {layer: 'butterfly', asset: '/assets/tmp/sprite3x150.png', anim: 'right-left', spriteanim: true},
+      {
+        layer: 'butterfly',
+        asset: '/assets/tmp/sprite3x150.jpg',
+        anim: 'none',
+        position: {x: 200, y: 400},
+        spriteanim: true
+      },
+      {
+        layer: 'butterfly',
+        asset: '/assets/tmp/sprite3x150.jpg',
+        anim: 'left-blip',
+        position: {y: 400},
+        spriteanim: true
+      },
+      {
+        layer: 'butterfly',
+        asset: '/assets/tmp/sprite3x150.jpg',
+        anim: 'right-blip',
+        position: {y: 200},
+        spriteanim: true
+      },
     ],
 
     pathpoints: [
@@ -112,9 +113,7 @@
 
 </script>
 
-<div class="wrapper">
-  <meta-path config="metapathConfigDzungle" startindex="3" redirect="false"></meta-path>
-</div>
+<meta-path config="metapathConfigDzungle" startindex="3" redirect="false"></meta-path>
 </body>
 
 </html>
