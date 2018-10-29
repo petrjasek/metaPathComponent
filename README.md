@@ -1,27 +1,95 @@
-# ElementsApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
 
-## Development server
+# metaPath
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+##base setup:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+link all required bundles at the bottom of the page
+```
+<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script>
+<script type="text/javascript" src="polyfills.b4daf421c94934f530d4.js"></script>
+<script type="text/javascript" src="scripts.69c39fe5fecacc5138f1.js"></script>
+<script type="text/javascript" src="main.d58ef66a7ca6fd185741.js"></script>
+```
+(has is changing every build)
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+## config
 
-## Running unit tests
+```javascript
+var metapathConfig = {
+    
+    // unique identification
+    pathId: 'seznamovani',
+    
+    // absolute path to background image
+    backgroundImageUrl: '/assets/scene/pastva/pastva-bg.jpg',
+    
+    // absolute path to player image (sprite)
+    playerAnimationUrl: '/assets/scene/pastva/player.png',
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+    // path colors setup
+    path: {
+      color: '#d8bcb0', // path background color
+      outline: '#89756e', // path outline color
+      pinNext: '#d8d16b', // pins to the left
+      pinPrev: '#7a8868', // pins done, to the right
+      pinCurrent: '#d88e55' // pin color (current, where player is standing)
+    },
 
-## Running end-to-end tests
+    // animation layers (optional)
+    
+    // layer: some id or name
+    // asset: absolute url to spritesheet
+    // anim: animation preset (left-right, right-left, none, left-blip, right-blip)
+    // spriteanim: true | false - disable/enable sprite frame animations (all sprites have 3 frames (150x150)
+    // position: x: y:
+    //    absolute  postion of the sprite, or define only y offset for animated sprites (anim is not 'none')     
+     
+    layers: [
+      {layer: 'butterfly', asset:'/assets/tmp/sprite150.jpg', anim: 'left-right', position: {x: 0, y:600}},
+      {layer: 'butterflyA', asset:'/assets/tmp/sprite3x150.png', anim: 'right-left', spriteanim: true},
+      {layer: 'butterflyB', asset:'/assets/tmp/sprite3x150.jpg', anim: 'none', position: {x: 200, y:400}, spriteanim: true},
+      {layer: 'butterflyC', asset:'/assets/tmp/sprite3x150.jpg', anim: 'left-blip', position: {y:400}, spriteanim: true},
+      {layer: 'butterflyD', asset:'/assets/tmp/sprite3x150.jpg', anim: 'right-blip', position: {y:200}, spriteanim: true},
+    ],
+    
+    
+    // path points
+    // this array of objects generates the path
+    // type: type of the point (not used now, for future display different point styles eg. test)
+    // url: url of the task (click to the point is causing redirect to page with tasks)    
+    pathpoints: [
+      {type: 'default', url: 'http://www.seznam.cz'},
+      {type: 'default', url: 'http://www.google.cz'},
+      {type: 'test', url: 'url3'},
+      {type: 'default', url: 'url4'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'},
+      {type: 'default', url: 'pointURL'}
+    ]
+  };
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-## Further help
+## include component to the page
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```html
+<meta-path config="metapathConfig" startindex="3" redirect="false"></meta-path>
+```
+
+- put the component to your page
+- config attr: link the config of the component
+- startindex attr: set the current index of the player 
+- redirect attr: 
+    - true (default) each point is redirecting user to its url
+    - false stop redirecting, only debug url to console 
