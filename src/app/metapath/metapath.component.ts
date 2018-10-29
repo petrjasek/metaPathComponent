@@ -26,7 +26,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     @Input()
     public config = null;
 
-    @Input() redirect = true;
+    @Input() redirect = 'true';
 
     @Input() startindex = 0;
 
@@ -416,7 +416,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     public gotoUrl(idx) {
         const url = this.points[idx].url;
-        if (this.redirect === true || this.redirect === 'true') {
+        if (this.redirect === 'true') {
             setTimeout(function () {
                 this.document.location.href = url;
             }, this.redirectTimeout);
