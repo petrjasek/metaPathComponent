@@ -44,17 +44,18 @@
         <div #helpContainer class="meta-path-help" *ngIf="helpVisible">
             <div class="meta-path-help-content">
                 <!--<div class="close-button" (click)="toggleHelp()">Zavřít</div>-->
-                <h2>This is help</h2>
-                <p>this is help content</p>
+                <h2 *ngIf="this.cs.getHelp().headline">{{this.cs.getHelp().headline}}</h2>
+                <p *ngIf="this.cs.getHelp().text">{{this.cs.getHelp().text}}</p>
+                <div *ngIf="this.cs.getHelp().imageUrl" class="meta-path-help-image">
+                    <img [src]="this.cs.getHelp().imageUrl" alt="">
+                </div>
                 <div class="dialog-footer button-group">
-                    <button class="button button-dialog" (click)="toggleHelp()">Zavřít</button>
+                    <button class="button button-dialog" (click)="toggleHelp()">{{this.cs.getHelp().close}}</button>
                 </div>
             </div>
-
-
         </div>
 
-        <div class="button button-help" (click)="toggleHelp()">help</div>
+        <div class="button button-help" (click)="toggleHelp()" *ngIf="cs.helpEnabled()">{{this.cs.getHelp().button}}</div>
         <div class="button button-next" (click)="goToPoint(1)"> ></div>
         <div class="button button-prev" (click)="goToPoint(-1)"> <</div>
 

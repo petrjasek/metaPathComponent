@@ -365,7 +365,14 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         const newIndex = this.currentNodeIndex + dir;
         if (newIndex >= 0 && newIndex < this.points.length) {
             this.movePlayerTo(dir, newIndex);
+        } else if (newIndex >= this.points.length) {
+            console.log('goToNextScreen');
+            this.gotoUrl(this.cs.getNextScreen());
+        } else if (newIndex < 0) {
+            console.log('gotoPrevScreen');
+            this.gotoUrl(this.cs.getPrevScreen());
         }
+
     }
 
     movePlayerTo(dir, targetIdx) {
@@ -379,7 +386,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
                     this.isWalking = 0;
                     clearInterval(this.timer);
                     Cookie.set(this.cookieName, this.currentNodeIndex.toString());
-                    this.gotoUrl(this.currentNodeIndex);
+                    this.gotoUrlByIndex(this.currentNodeIndex);
 
 // //                    this.setViewToPlayerPosition();
 //                     const xoffs = this.swiperInstance.getTranslate('x');
@@ -414,8 +421,17 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         this.helpVisible = !this.helpVisible;
     }
 
-    public gotoUrl(idx) {
+    public gotoUrlByIndex(idx) {
         const url = this.points[idx].url;
+        this.gotoUrl(url);
+    }
+
+    public gotoUrl(url) {
+        if (!url) {
+            console.log('missing url');
+            return;
+        }
+
         if (this.redirect === 'true') {
             setTimeout(function () {
                 this.document.location.href = url;

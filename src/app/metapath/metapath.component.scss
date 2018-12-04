@@ -171,8 +171,13 @@
     bottom: 10px;
     left: 0;
     right: 0;
-    width: 120px;
+    width: 140px;
+    text-align: center;
     margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+
+
 }
 
 .dialog-footer {
@@ -198,6 +203,14 @@
     background-color: rgba(green, 0.7);
 }
 
+.meta-path-help-image {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    img {
+    }
+}
+
 .meta-path-help-content {
     background-color: green;
     min-width: 600px;
@@ -209,6 +222,11 @@
 
     font-family: Arial, sans-serif;
     font-size: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     h2 {
         font-size: 28px;
