@@ -9,7 +9,15 @@
                             <svg:path *ngIf="pathOutline" id="pathOultine" [attr.stroke]="pathOutline" stroke-linejoin="round" stroke-linecap="round" stroke-width="70" [attr.d]="svgPathString"></svg:path>
                             <svg:path id="path" [attr.stroke]="pathcolor" stroke-linejoin="round" stroke-linecap="round" stroke-width="60" [attr.d]="svgPathString"></svg:path>
 
-                            <svg:ellipse class="node" *ngFor="let point of points; let i = index" stroke-width="3" (click)="nodeClick(i)" [style.fill]="pathPointStyle(i)" [ngClass]="pathPointClass(i)" [attr.cx]="getPosX(i)" [attr.cy]="getPosY(i)" rx="24" ry="14" />
+                            <svg:g  *ngFor="let point of points; let i = index" [attr.cx]="getPosX(i)" [attr.cy]="getPosY(i)" [attr.transform]="'translate('+getPosX(i)+' '+getPosY(i)+')'" (click)="nodeClick(i)">
+                                <svg:ellipse class="node" stroke-width="3"  [style.fill]="pathPointStyle(i)" cx="0" cy="0" [ngClass]="pathPointClass(i)"  rx="24" ry="14" />
+
+                                <svg:g *ngIf="getPointType(i) =='test'" class="test-node" [ngClass]="pathPointClass(i)" >
+                                    <ellipse stroke-width="3" stroke="red" cx="0" cy="0" rx="40" ry="24" class="test-node-oval"></ellipse>
+                                    <text x="-17" y="4" class="test-node-text">Test</text>
+                                </svg:g>
+
+                            </svg:g>
 
                             <!--<svg:ellipse #player class="player" [attr.cx]="getPlayerPosition(currentNodeIndex).x" [attr.cy]="getPlayerPosition(currentNodeIndex).y" rx="5" ry="5"></svg:ellipse>-->
 

@@ -421,6 +421,10 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         this.helpVisible = !this.helpVisible;
     }
 
+    public getPointType(idx) {
+        return this.points[idx].type;
+    }
+
     public gotoUrlByIndex(idx) {
         const url = this.points[idx].url;
         this.gotoUrl(url);

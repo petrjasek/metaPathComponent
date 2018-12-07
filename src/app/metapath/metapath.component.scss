@@ -1,11 +1,13 @@
 .meta-path {
 
     box-sizing: border-box;
+
     * {
         box-sizing: border-box;
         -webkit-font-smoothing: antialiased;
         user-select: none;
     }
+
     display: flex;
     justify-content: center;
     position: relative;
@@ -81,6 +83,38 @@
     //fill: orange;
     stroke: white;
 }
+
+.test-node {
+
+    .test-node-oval {
+        fill: white;
+        stroke: red;
+    }
+
+    .test-node-text {
+        stroke: none;
+        font-weight: bold;
+        font-family: sans-serif;
+        fill: red;
+    }
+}
+
+//.test-node.node-done {
+//        font-family: Arial, sans-serif;
+//
+//    .test-node-oval {
+//        fill: white;
+//        stroke: green;
+//    }
+//
+//    .test-node-text {
+//        font-weight: bold;
+//        font-family: Arial, sans-serif;
+//        fill: green;
+//    }
+//}
+
+
 
 .player {
     fill: deeppink;
@@ -207,6 +241,7 @@
     margin-top: 20px;
     display: flex;
     justify-content: center;
+
     img {
     }
 }
