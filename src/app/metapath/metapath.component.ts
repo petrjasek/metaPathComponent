@@ -285,23 +285,15 @@ export class MetapathComponent implements OnInit, AfterViewInit {
     }
 
     pathPointClass(idx) {
-        if (idx < this.currentNodeIndex) {
+        if (this.points[idx].done) {
             return 'node-done';
         }
-
-        if (idx === this.currentNodeIndex) {
-            return 'node-current';
-        }
-
         return 'node-next';
     }
 
     pathPointStyle(idx) {
-        if (idx < this.currentNodeIndex) {
+        if (this.points[idx].done) {
             return this.previousPinColor;
-        }
-        if (idx === this.currentNodeIndex) {
-            return this.currentPinColor;
         }
         return this.nextPinColor;
     }
