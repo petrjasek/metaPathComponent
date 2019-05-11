@@ -7,7 +7,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build": "ng build --prod --output-hashing=none",
+    "build": "ng build --output-hashing=none",
     "package": "cat dist/elementsApp/{runtime,polyfills,scripts,main}.js | gzip > elements.js.gz"
   },
   "private": true,
@@ -22,11 +22,12 @@
     "@angular/platform-browser": "^6.0.0",
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@angular/router": "^6.0.0",
+    "@webcomponents/webcomponentsjs": "^2.2.10",
     "core-js": "^2.5.4",
-    "document-register-element": "^1.7.2",
+    "document-register-element": "^1.8.1",
     "ng2-cookies": "^1.0.12",
     "ngx-swiper-wrapper": "^6.1.0",
-    "rxjs": "^6.0.0",
+    "rxjs": "~6.0.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
