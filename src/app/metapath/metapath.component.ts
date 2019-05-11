@@ -369,6 +369,9 @@ export class MetapathComponent implements OnInit, AfterViewInit {
 
     movePlayerTo(dir, targetIdx) {
         if (!this.isWalking) {
+            if (this.currentNodeIndex === targetIdx) {
+                return;
+            }
 
             this.isWalking = dir;
             this.timer = setInterval(() => {
