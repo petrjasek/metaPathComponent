@@ -9,14 +9,22 @@
                             <svg:path *ngIf="pathOutline" id="pathOultine" [attr.stroke]="pathOutline" stroke-linejoin="round" stroke-linecap="round" stroke-width="70" [attr.d]="svgPathString"></svg:path>
                             <svg:path id="path" [attr.stroke]="pathcolor" stroke-linejoin="round" stroke-linecap="round" stroke-width="60" [attr.d]="svgPathString"></svg:path>
 
-                            <svg:g  *ngFor="let point of points; let i = index" [attr.cx]="getPosX(i)" [attr.cy]="getPosY(i)" [attr.transform]="'translate('+getPosX(i)+' '+getPosY(i)+')'" (click)="nodeClick(i)">
+                            <svg:g  *ngFor="let point of points; let i = index"
+                                [attr.cx]="getPosX(i)"
+                                [attr.cy]="getPosY(i)"
+                                [attr.transform]="'translate('+getPosX(i)+' '+getPosY(i)+')'"
+                                (click)="nodeClick(i)"
+                                (mouseenter)="showTooltip(i)"
+                                (mouseleave)="hideTooltip(i)"
+                            >
                                 <svg:ellipse class="node" stroke-width="3"  [style.fill]="pathPointStyle(i)" cx="0" cy="0" [ngClass]="pathPointClass(i)"  rx="24" ry="14" />
 
-                                <svg:g *ngIf="getPointType(i) =='test'" class="test-node" [ngClass]="pathPointClass(i)" >
+                                <svg:g *ngIf="getPointType(i) == 'test'" class="test-node" [ngClass]="pathPointClass(i)" >
                                     <ellipse stroke-width="3" stroke="red" cx="0" cy="0" rx="40" ry="24" class="test-node-oval"></ellipse>
                                     <text x="-17" y="4" class="test-node-text">Test</text>
                                 </svg:g>
 
+                                <title>{{getPointTitle(i)}}</title>
                             </svg:g>
 
                             <!--<svg:ellipse #player class="player" [attr.cx]="getPlayerPosition(currentNodeIndex).x" [attr.cy]="getPlayerPosition(currentNodeIndex).y" rx="5" ry="5"></svg:ellipse>-->
@@ -48,7 +56,6 @@
             </div>
         </div>
 
-
         <div #helpContainer class="meta-path-help" *ngIf="helpVisible">
             <div class="meta-path-help-content">
                 <!--<div class="close-button" (click)="toggleHelp()">Zavřít</div>-->
@@ -63,10 +70,6 @@
             </div>
         </div>
 
-        <div class="button button-help" (click)="toggleHelp()" *ngIf="cs.helpEnabled()">{{this.cs.getHelp().button}}</div>
-        <div class="button button-next" (click)="goToPoint(1)"> ></div>
-        <div class="button button-prev" (click)="goToPoint(-1)"> <</div>
-
+        <div id="scrollbar"></div>
     </div>
-
 </div>

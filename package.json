@@ -7,7 +7,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build": "ng build --output-hashing=none",
+    "build": "ng build --output-hashing=bundles",
     "package": "cat dist/elementsApp/{runtime,polyfills,scripts,main}.js | gzip > elements.js.gz"
   },
   "private": true,

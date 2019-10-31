@@ -14,6 +14,7 @@ import {SwiperConfigInterface} from 'ngx-swiper-wrapper';
 import {Cookie} from 'ng2-cookies';
 import {ConfigService} from './config.service';
 import {DOCUMENT} from '@angular/common';
+import Tooltip from 'tooltip.js';
 
 @Component({
     selector: 'meta-path',
@@ -104,10 +105,16 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         centeredSlides: false,
         keyboard: false,
         mousewheel: true,
-        scrollbar: false,
+        scrollbar: {
+            el: '#scrollbar',
+            hide: false,
+            draggable: true,
+        },
         navigation: false,
-        pagination: false
+        pagination: false,
     };
+
+    private tooltips = [];
 
     constructor(private cconf: ConfigService, @Inject(DOCUMENT) private document: any) {
         this.cs = cconf;
@@ -148,6 +155,7 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         this.swiperWidth = this.swiperWrapper.directiveRef.elementRef.nativeElement.clientWidth;
         this.setViewToPlayerPosition();
         this.setScaleTransform();
+        //this.setTooltips();
     }
 
 
@@ -296,6 +304,10 @@ export class MetapathComponent implements OnInit, AfterViewInit {
             return this.previousPinColor;
         }
         return this.nextPinColor;
+    }
+
+    getPointTitle(idx) {
+        return this.points[idx].title;
     }
 
     getPlayerPosition(idx, ratio = 1) {
@@ -469,4 +481,26 @@ export class MetapathComponent implements OnInit, AfterViewInit {
         return (css);
     }
 
+    public setTooltips() {
+        setTimeout(() => {
+            Array.prototype.slice.call(window.document.getElementsByTagName('title'))
+                .forEach((title) => {
+                    if (title.namespaceURI.includes('svg') && title.innerHTML) {
+                        this.tooltips.push(new Tooltip(title.parentNode, {
+                            title: title.innerHTML,
+                            placement: 'bottom',
+                            container: window.document.body,
+                        }));
+                    }
+                });
+        }, 1000);
+    }
+
+    public showTooltip(idx) {
+        this.tooltips.length && this.tooltips[idx].show();
+    }
+
+    public hideTooltip(idx) {
+        this.tooltips.length && this.tooltips[idx].hide();
+    }
 }
